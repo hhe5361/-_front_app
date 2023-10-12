@@ -45,5 +45,13 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<key>NSCameraUsageDescription</key>
+	<string>카메라 권한 좀 주세요 ㅋㅋ</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>음성 녹음 권한 좀 주세요 ㅋㅋ</string>
+
+
+
 </dict>
 </plist>

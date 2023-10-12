@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trackproject/src/View/AIPage/ImageSelectPage.dart/ImageSelectPage.dart';
 import 'package:trackproject/src/utilities/MyTheme.dart';
 
@@ -6,7 +7,6 @@ class CreatePage extends StatelessWidget {
   CreatePage({super.key});
 
   late bool isback = false;
-  final _routepage = [];
 
   Future<void> _rendercaution(BuildContext ctx) {
     return showDialog(
@@ -49,7 +49,7 @@ class CreatePage extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) {
-                return ImageSelectPage();
+                return SampleScreen();
               },
             ));
           },
@@ -60,7 +60,7 @@ class CreatePage extends StatelessWidget {
             alignment: Alignment.center,
             child: const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child: Expanded(child: Icon(Icons.add))),
+                child: Icon(Icons.add)),
           ),
         ),
       ),
@@ -117,7 +117,7 @@ class CreatePage extends StatelessWidget {
                     children: [
                       _renderselect("사진", false, context),
                       const SizedBox(height: 20),
-                      _renderselect("동영상", true, context),
+                      _renderselect("동영상", false, context),
                       const SizedBox(height: 20),
                       _renderselect("음성", false, context),
                       Expanded(
