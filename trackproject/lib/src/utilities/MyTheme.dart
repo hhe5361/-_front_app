@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 AppBar myappbar = AppBar(
   title: const Text(
-    "Abbbar",
+    "저세계 아이돌",
     style: TextStyle(color: Colors.black),
   ),
   elevation: 0.5,

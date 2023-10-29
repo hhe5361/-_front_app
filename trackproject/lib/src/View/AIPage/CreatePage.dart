@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:trackproject/src/View/AIPage/ImageSelectPage.dart/ImageSelectPage.dart';
 import 'package:trackproject/src/utilities/MyTheme.dart';
 
@@ -49,7 +48,7 @@ class CreatePage extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) {
-                return SampleScreen();
+                return const ShowImage();
               },
             ));
           },
