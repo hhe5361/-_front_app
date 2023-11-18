@@ -46,6 +46,7 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
+	<string>갤러리 권한 좀 주세요 ㅋㅋ</string>
 	<key>NSCameraUsageDescription</key>
 	<string>카메라 권한 좀 주세요 ㅋㅋ</string>
 	<key>NSMicrophoneUsageDescription</key>

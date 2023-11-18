@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trackproject/src/View/LoginPage/SigninPage.dart';
+import 'package:trackproject/src/provider/LoginProvider.dart';
 import 'package:trackproject/src/utilities/MyTheme.dart';
 import 'package:trackproject/src/utilities/TextFormStyle.dart';
 
@@ -12,22 +14,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-
-  Widget rendertextformfield() {
-    return Form(
-      key: _formKey,
-      child: Column(children: [
-        TextFormField(
-          validator: (v) {},
-          decoration: myinputdecoration(const Icon(Icons.person), "ID"),
-        ),
-        TextFormField(
-          validator: (v) {},
-          decoration: myinputdecoration(const Icon(Icons.key), "password"),
-        )
-      ]),
-    );
-  }
+  late String? _id;
+  late String? _password;
 
   Widget loginbutton() {
     return TextButton(
@@ -36,7 +24,8 @@ class _LoginPageState extends State<LoginPage> {
           final formkeystate = _formKey.currentState!;
           if (formkeystate.validate()) {
             formkeystate.save();
-            //다음 페이지로 넘어가는 거거
+            //여기서 데이터 뿌려야 한다.
+            Provider.of<LoginProvider>(context, listen: false); //login 하는 부분임.
           }
         },
         child: Container(
@@ -59,11 +48,36 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    var idtextform = TextFormField(
+      validator: (v) {
+        if (v == null) {
+          return "최소 5자 이상으로 입력해주세요";
+        }
+        return null;
+      },
+      onSaved: (newValue) => _id = newValue,
+      decoration: myinputdecoration(const Icon(Icons.person), "ID"),
+    );
+
+    var passwordtextform = TextFormField(
+      validator: (v) {
+        if (v == null) {
+          return "password를 입력해주세요";
+        }
+        return null;
+      },
+      onSaved: (newValue) => _password = newValue,
+      decoration: myinputdecoration(const Icon(Icons.key), "password"),
+    );
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(50, 45, 50, 0),
       child: Column(
         children: [
-          rendertextformfield(),
+          Form(
+            key: _formKey,
+            child: Column(children: [idtextform, passwordtextform]),
+          ),
           const SizedBox(height: 30),
           loginbutton(),
           const SizedBox(height: 30),

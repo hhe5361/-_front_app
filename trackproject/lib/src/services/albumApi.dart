@@ -1,23 +1,22 @@
 import 'package:photo_manager/photo_manager.dart';
 
-//album data get post하는 거
 class AlbumService {
-  //get all the albums. and return album list
+  AlbumService({required this.requesttype});
+  final RequestType requesttype;
+
   Future<List<AssetPathEntity>> getAlbum() async {
-    return await PhotoManager.getAssetPathList(
-      type: RequestType.image,
-    );
+    return await PhotoManager.getAssetPathList(type: requesttype);
   }
 
   //get photos from AssetPathEntity, and return photos < data type is AssetPathEntity
-  Future<List<AssetEntity>> getPhotos(
+  Future<List<AssetEntity>> getassets(
     AssetPathEntity path, {
     int currentpage = 0,
   }) async {
-    final loadimgaes = await path.getAssetListPaged(
+    final loadassets = await path.getAssetListPaged(
       page: currentpage,
-      size: 20,
+      size: await path.assetCountAsync,
     );
-    return loadimgaes;
+    return loadassets;
   }
 }

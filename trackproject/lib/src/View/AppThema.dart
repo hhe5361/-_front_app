@@ -31,6 +31,7 @@ class _AppThemaState extends State<AppThema> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: myappbar,
           body: _pages.elementAt(_currentpage),
           bottomNavigationBar: BottomNavigationBar(

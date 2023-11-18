@@ -1,17 +1,24 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:trackproject/src/models/UserInfo.dart';
 import 'package:trackproject/src/services/UserLogin.dart';
 
 class LoginProvider with ChangeNotifier {
-  LoginApi _api = LoginApi();
+  final LoginApi _api = LoginApi();
+  bool _islogin = false;
   User? _user;
 
-  Future<bool> login() async {
+  Future<void> login() async {
     try {
-      await _api.trylogin();
-      return true;
+      var result = await _api.login();
+      if (result != null) {
+        _islogin = true;
+      } else {
+        //"error message handling 해야 한다." <- 요구하기.
+      }
     } catch (e) {
-      return false;
+      //error handling
     }
+    notifyListeners();
   }
 }

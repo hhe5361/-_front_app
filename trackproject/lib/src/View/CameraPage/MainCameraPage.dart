@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:trackproject/src/View/AIPage/ImageSelectPage.dart/fortest.dart';
 
 class MainCameraPage extends StatelessWidget {
   const MainCameraPage({super.key});
 
-  Widget renderclickbutton() {
+  Widget _renderclickbutton() {
     return GestureDetector(
       onTap: () {},
       child: Container(
@@ -21,17 +22,45 @@ class MainCameraPage extends StatelessWidget {
     );
   }
 
+  //gallery 연결 예정
+  Widget _rendergallery(BuildContext context) {
+    return TextButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) {
+              return SampleScreen();
+            },
+          ));
+        },
+        child: Container(
+          width: 60,
+          height: 60,
+          color: Colors.grey,
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     double mediah = MediaQuery.of(context).size.height;
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 수직 방향으로 공간을 균등하게 분배
       children: [
         Container(
           height: mediah * 0.64,
           width: double.infinity,
           color: Colors.grey,
         ),
-        renderclickbutton(),
+        Expanded(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+              _rendergallery(context),
+              _renderclickbutton(),
+              Container(
+                width: 60,
+                height: 60,
+              )
+            ]))
       ],
     );
   }

@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:trackproject/src/View/AIPage/ImageSelectPage.dart/ImageSelectPage.dart';
+import 'package:trackproject/src/View/AIPage/ImageSelectPage.dart/fortest.dart';
+import 'package:trackproject/src/View/AIPage/RecordSelectPage/RecordSelectPage.dart';
+import 'package:trackproject/src/View/AIPage/VideoSelectPage.dart/VideoSelectPage.dart';
 import 'package:trackproject/src/utilities/MyTheme.dart';
 
 class CreatePage extends StatelessWidget {
   CreatePage({super.key});
 
   late bool isback = false;
+  List<dynamic> pages = [
+    SampleScreen(),
+    const SelectVideoPage(),
+    const RecordSelectPage()
+  ];
 
+  List<String> label = ["사진", "동영상", "음성"];
   Future<void> _rendercaution(BuildContext ctx) {
     return showDialog(
       context: ctx,
@@ -33,9 +41,11 @@ class CreatePage extends StatelessWidget {
     );
   }
 
-  Widget _renderselect(String label, bool isselected, BuildContext context) {
+  Widget _renderselect(int index, bool isselected, BuildContext context) {
+    String thislabel = label[index];
+
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text("$label을 선택해주세요!"),
+      Text("$thislabel을 선택해주세요!"),
       const SizedBox(height: 5),
       Container(
         alignment: Alignment.center,
@@ -45,10 +55,13 @@ class CreatePage extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(10))),
         height: 100,
         child: GestureDetector(
-          onTap: () {
+          onTap: () async {
+            //permission check하고 가야 들어가야 하는 부분..
+            // await Provider.of<ImageAlbumProvider>(context, listen: false)
+            //     .checkPermission(); //이미 데이터가 다 들어가 있어야 하는 거 아님?
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) {
-                return const ShowImage();
+                return pages[index];
               },
             ));
           },
@@ -114,11 +127,11 @@ class CreatePage extends StatelessWidget {
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      _renderselect("사진", false, context),
+                      _renderselect(0, false, context),
                       const SizedBox(height: 20),
-                      _renderselect("동영상", false, context),
+                      _renderselect(1, false, context),
                       const SizedBox(height: 20),
-                      _renderselect("음성", false, context),
+                      _renderselect(2, false, context),
                       Expanded(
                           child: Container(
                               alignment: Alignment.center,

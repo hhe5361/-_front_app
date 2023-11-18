@@ -20,21 +20,24 @@ class MainAiPage extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(25, 10, 25, 10),
       height: 200);
 
-  Widget _renderbutton(BuildContext context) => ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CreatePage()));
-        },
-        style: mybuttonstyle(color: Colors.black),
-        child: const Text(
-          "Get Start",
-          style: TextStyle(color: Colors.white),
+  Widget _renderbutton(BuildContext context) => Container(
+        margin: const EdgeInsets.symmetric(horizontal: 100),
+        child: FilledButton(
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => CreatePage()));
+          },
+          style: mybuttonstyle(color: Colors.black),
+          child: const Text(
+            "Get Start",
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       );
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       //crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[_renderimage(), _renderText(), _renderbutton(context)],
     );

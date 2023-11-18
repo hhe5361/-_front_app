@@ -4,10 +4,15 @@ import 'package:trackproject/src/models/UserInfo.dart';
 class LoginApi {
   late User user;
 
-  Future trylogin() async {
+  Future login() async {
     var dio = Dio();
 
-    return await dio.request('path',
-        data: {}, options: Options(method: 'POST'));
+    Response response =
+        await dio.request('path', data: {}, options: Options(method: 'POST'));
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      return null;
+    }
   }
 }
