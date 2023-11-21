@@ -1,0 +1,12 @@
+final String baseuri = 'http://10.0.2.2:8080';
+final String login_endpoint = '/user/login';
+final String sign_endpoint = '/user/signUp';
+final String saveimage_endpoint = '/image/saveImage';
+final String savevideo_endpoint = '/video/saveVideo';
+final String saverecord_endpoint = '/record/saveRecord';
+final String youtube_endpoint = '/video/YouTubeVideo';
+final String delete_image_endpoint = '/ai/deleteImage';
+final String delete_video_endpoint = '/ai/deleteViedo';
+final String delete_record_endpoint = '/ai/deleteRecord';
+final String savefile_endpoint = '/ai/saveFile';
+final String savefile_youtube_endpoint = '/ai/saveFile-YouTube';

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:trackproject/src/View/AIPage/GridAsset.dart';
 import 'package:trackproject/src/models/Album.dart';
 
-class SampleScreen extends StatefulWidget {
-  const SampleScreen({Key? key}) : super(key: key);
+class LocalImageSelectPage extends StatefulWidget {
+  const LocalImageSelectPage({Key? key}) : super(key: key);
 
   @override
-  State<SampleScreen> createState() => _SampleScreenState();
+  State<LocalImageSelectPage> createState() => _LocalImageSelectPageState();
 }
 
-class _SampleScreenState extends State<SampleScreen> {
+class _LocalImageSelectPageState extends State<LocalImageSelectPage> {
   List<AssetPathEntity>? _paths;
   List<Album> _albums = [];
   late List<FavAsset> _images;
@@ -20,11 +19,11 @@ class _SampleScreenState extends State<SampleScreen> {
 
   Future<void> checkPermission() async {
     await getAlbum(); //아 android 13+에서는 필요가 없다네...? ㅅㅂ
-    var status = await Permission.manageExternalStorage.request();
-    if (status.isGranted) {
-    } else if (status.isPermanentlyDenied) {
-      openAppSettings();
-    }
+    // var status = await Permission.manageExternalStorage.request();
+    // if (status.isGranted) {
+    // } else if (status.isPermanentlyDenied) {
+    //   openAppSettings();
+    // }
   }
 
   Future<void> getAlbum() async {
@@ -78,10 +77,22 @@ class _SampleScreenState extends State<SampleScreen> {
         child: _albums.isNotEmpty
             ? DropdownButton<Album>(
                 value: _currentAlbum,
+                alignment: Alignment.center,
+                borderRadius: BorderRadius.circular(15),
+                dropdownColor: Colors.blue.shade50,
+                style: const TextStyle(
+                    overflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 12),
+                elevation: 10,
                 items: _albums
                     .map((e) => DropdownMenuItem<Album>(
                           value: e,
-                          child: Text(e.name),
+                          child: Text(
+                            e.name,
+                            textAlign: TextAlign.center,
+                          ),
                         ))
                     .toList(),
                 onChanged: (value) => getPhotos(value!, albumChange: true),
@@ -113,7 +124,10 @@ class _SampleScreenState extends State<SampleScreen> {
         child: SafeArea(
           child: _paths == null
               ? const Center(child: CircularProgressIndicator())
-              : GridAssets(assets: _images),
+              : GridAssets(
+                  assets: _images,
+                  type: AssetType.image,
+                ),
         ),
       ),
     );

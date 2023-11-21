@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trackproject/src/View/AppThema.dart';
+import 'package:trackproject/src/provider/SelectAssetProvider.dart';
+import 'package:trackproject/src/provider/UserProvider.dart';
 import 'package:trackproject/src/provider/YoutubeLinkeProvider.dart';
 import 'package:trackproject/src/utilities/MyTheme.dart';
 import 'package:trackproject/src/utilities/mediasize.dart';
@@ -8,8 +10,10 @@ import 'package:trackproject/src/utilities/mediasize.dart';
 void main() {
   runApp(MultiProvider(
     providers: [
-      //ChangeNotifierProvider(create: (context) => ImageAlbumProvider()),
-      ChangeNotifierProvider(create: (context) => YoutubeLinkProvider())
+      ChangeNotifierProvider(create: (context) => YoutubeLinkProvider()),
+      ChangeNotifierProvider(create: (context) => UserProvider()),
+      ChangeNotifierProvider(create: (context) => SignupProvider()),
+      ChangeNotifierProvider(create: (context) => SelectAssetProvider()),
     ],
     child: const MyApp(),
   ));

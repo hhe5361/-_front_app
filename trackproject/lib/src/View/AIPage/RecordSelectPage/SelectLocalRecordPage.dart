@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:provider/provider.dart';
 import 'package:trackproject/src/models/Album.dart';
+import 'package:trackproject/src/provider/SelectAssetProvider.dart';
 import 'package:trackproject/src/utilities/MyTheme.dart';
 import 'package:trackproject/src/utilities/mediasize.dart';
+import 'package:trackproject/src/utilities/snackbar.dart';
 import 'package:trackproject/src/utilities/time_convert.dart';
 
 class SelectLocalAudio extends StatefulWidget {
@@ -15,6 +20,7 @@ class SelectLocalAudio extends StatefulWidget {
 class _SelectLocalAudioState extends State<SelectLocalAudio> {
   AssetPathEntity? _path;
   final List<FavAsset> _audios = [];
+  AssetEntity? _selectaudio;
   int _currentpage = 0;
   int _count = 0;
 
@@ -60,6 +66,9 @@ class _SelectLocalAudioState extends State<SelectLocalAudio> {
         onTap: () {
           if (_count == 1 && _audios[index].favo == false) {
           } else {
+            if (_count == 0) {
+              _selectaudio = _audios[index].assetinfo;
+            }
             setState(() {
               _count = _audios[index].favo ? 0 : 1;
               _audios[index].favo = !_audios[index].favo;
@@ -102,7 +111,14 @@ class _SelectLocalAudioState extends State<SelectLocalAudio> {
 
   Widget _renderaddbutton() => FloatingActionButton(
       backgroundColor: _count == 0 ? Colors.grey : Colors.greenAccent,
-      onPressed: () {},
+      onPressed: () async {
+        File? file = await _selectaudio?.file;
+        Provider.of<SelectAssetProvider>(context, listen: false).filesave(
+            filepath: file!.path, islink: false, type: AssetType.audio);
+        debugPrint("선택한 asset의 절대 경로 의미함" + file!.path.toString());
+        Navigator.pop(context);
+        showSnackBar("image file이 선택됐습니다!", context);
+      },
       child: Text(
         "$_count/1",
         style: const TextStyle(color: Colors.black),

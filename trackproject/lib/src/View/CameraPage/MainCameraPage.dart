@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trackproject/src/View/AIPage/ImageSelectPage.dart/fortest.dart';
+import 'package:trackproject/src/View/AIPage/ImageSelectPage.dart/SelectLocalImage.dart';
 
 class MainCameraPage extends StatelessWidget {
   const MainCameraPage({super.key});
@@ -28,7 +28,7 @@ class MainCameraPage extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
             builder: (context) {
-              return SampleScreen();
+              return LocalImageSelectPage();
             },
           ));
         },

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:trackproject/src/utilities/mediasize.dart';
 
 void showSnackBar(String message, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
+      duration: const Duration(milliseconds: 700),
+
       content: Text(
         message,
         textAlign: TextAlign.center,

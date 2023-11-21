@@ -18,7 +18,7 @@ class _AppThemaState extends State<AppThema> {
   final List<Widget> _pages = <Widget>[
     const MainAiPage(),
     const MainCameraPage(),
-    const MainUserPage()
+    MainUserPage()
   ];
 
   void _onItemTapped(int index) {

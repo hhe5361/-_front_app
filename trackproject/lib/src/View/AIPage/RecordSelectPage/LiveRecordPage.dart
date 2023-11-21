@@ -1,48 +1,22 @@
-/*
- * Copyright 2018, 2019, 2020, 2021 Dooboolab.
- *
- * This file is part of Flutter-Sound.
- *
- * Flutter-Sound is free software: you can redistribute it and/or modify
- * it under the terms of the Mozilla Public License version 2 (MPL2.0),
- * as published by the Mozilla organization.
- *
- * Flutter-Sound is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * MPL General Public License for more details.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
 import 'dart:async';
+import 'dart:io';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:trackproject/src/utilities/MyTheme.dart';
+import 'package:photo_manager/photo_manager.dart';
+import 'package:provider/provider.dart';
+import 'package:trackproject/src/provider/SelectAssetProvider.dart';
+import 'package:trackproject/src/utilities/mediasize.dart';
+import 'package:trackproject/src/utilities/snackbar.dart';
 
 typedef _Fn = void Function();
 
-/* This does not work. on Android we must have the Manifest.permission.CAPTURE_AUDIO_OUTPUT permission.
- * But this permission is _is reserved for use by system components and is not available to third-party applications._
- * Pleaser look to [this](https://developer.android.com/reference/android/media/MediaRecorder.AudioSource#VOICE_UPLINK)
- *
- * I think that the problem is because it is illegal to record a communication in many countries.
- * Probably this stands also on iOS.
- * Actually I am unable to record DOWNLINK on my Xiaomi Chinese phone.
- *
- */
-//const theSource = AudioSource.voiceUpLink;
-//const theSource = AudioSource.voiceDownlink;
-
 const theSource = AudioSource.microphone;
 
-/// Example app.
 class LiveRecordPage extends StatefulWidget {
   const LiveRecordPage({Key? key}) : super(key: key);
 
@@ -58,6 +32,8 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
   bool _mplaybackReady = false;
+  bool _havefile = false;
+  Duration _recordedTime = Duration();
 
   @override
   void initState() {
@@ -123,7 +99,6 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
     _mRecorderIsInited = true;
   }
 
-  //recording and playback
   void record() {
     _mRecorder!
         .startRecorder(
@@ -134,13 +109,14 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
         .then((value) {
       setState(() {});
     });
+    // if (tempFile.existsSync()) {
   }
 
   void stopRecorder() async {
     await _mRecorder!.stopRecorder().then((value) {
       setState(() {
-        //var url = value;
         _mplaybackReady = true;
+        _havefile = true;
       });
     });
   }
@@ -153,7 +129,6 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
     _mPlayer!
         .startPlayer(
             fromURI: _temppath,
-            //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
             whenFinished: () {
               setState(() {});
             })
@@ -167,8 +142,6 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
       setState(() {});
     });
   }
-
-// ----------------------------- UI --------------------------------------------
 
   _Fn? getRecorderFn() {
     if (!_mRecorderIsInited || !_mPlayer!.isStopped) {
@@ -184,72 +157,69 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
     return _mPlayer!.isStopped ? play : stopPlayer;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Widget makeBody() {
-      return Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(3),
-            padding: const EdgeInsets.all(3),
-            height: 80,
-            width: double.infinity,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFAF0E6),
-              border: Border.all(
-                color: Colors.indigo,
-                width: 3,
-              ),
-            ),
-            child: Row(children: [
-              ElevatedButton(
-                onPressed: getRecorderFn(),
-                //color: Colors.white,
-                //disabledColor: Colors.grey,
-                child: Text(_mRecorder!.isRecording ? 'Stop' : 'Record'),
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              Text(_mRecorder!.isRecording
-                  ? 'Recording in progress'
-                  : 'Recorder is stopped'),
-            ]),
-          ),
-          Container(
-            margin: const EdgeInsets.all(3),
-            padding: const EdgeInsets.all(3),
-            height: 80,
-            width: double.infinity,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
-              border: Border.all(
-                color: Colors.indigo,
-                width: 3,
-              ),
-            ),
-            child: Row(children: [
-              ElevatedButton(
-                onPressed: getPlaybackFn(),
-                //color: Colors.white,
-                //disabledColor: Colors.grey,
-                child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              Text(_mPlayer!.isPlaying
-                  ? 'Playback in progress'
-                  : 'Player is stopped'),
-            ]),
-          ),
-        ],
-      );
-    }
+  Future<String?> savefile() async {
+    Directory? appDocDir = await getApplicationDocumentsDirectory();
+    String saveDirectory = appDocDir.path;
 
-    return body();
+    String? fileName = await _showFileNameInputDialog();
+    debugPrint("appDoc: " + saveDirectory + fileName!);
+
+    if (fileName != null && fileName.isNotEmpty) {
+      String customSavePath = '$saveDirectory/$fileName.mp4';
+
+      Directory customSaveDir = Directory(saveDirectory);
+      if (!customSaveDir.existsSync()) {
+        customSaveDir.createSync(recursive: true);
+      }
+      //_temppath에 있는 거 긁어서 저장하는 코드
+      File tempFile = File(
+          "/data/user/0/com.example.trackproject/cache/flutter_tempfile.mp4");
+      if (tempFile.existsSync()) {
+        File? savefile = await tempFile.copy(customSavePath);
+        debugPrint("debug!!!!" + savefile.path + "origin:" + customSavePath);
+        showSnackBar("녹음 파일이 저장됐습니다 : $customSavePath", context);
+
+        return savefile.path;
+      } else {
+        print('복사할 파일이 존재하지 않습니다.');
+      }
+    } else {
+      showSnackBar("파일명을 다시 입력해주세요.", context);
+    }
+  }
+
+  Future<String?> _showFileNameInputDialog() async {
+    String? filename;
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('파일 이름 입력'),
+          content: TextField(
+            onChanged: (value) {
+              filename = value;
+            },
+            decoration: const InputDecoration(labelText: '파일 이름'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('취소'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, filename);
+              },
+              child: const Text('저장'),
+            ),
+          ],
+        );
+      },
+    );
+    return filename;
   }
 
   Widget recordbody() {
@@ -269,22 +239,32 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
         ),
         Expanded(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               circlebox(
-                IconButton(onPressed: () {}, icon: Icon(Icons.play_arrow)),
+                IconButton(
+                    onPressed: getPlaybackFn(),
+                    icon: _mPlayer!.isPlaying
+                        ? const Icon(
+                            Icons.pause,
+                            color: Colors.black,
+                          )
+                        : const Icon(Icons.play_arrow)),
+              ),
+              SizedBox(
+                width: mediawidth * 0.2,
               ),
               circlebox(
                 IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.circle,
-                      color: Colors.red,
-                    )),
+                  onPressed: getRecorderFn(),
+                  icon: _mRecorder!.isRecording
+                      ? const Icon(Icons.pause)
+                      : const Icon(
+                          Icons.circle,
+                          color: Colors.red,
+                        ),
+                ),
               ),
-              circlebox(
-                IconButton(onPressed: () {}, icon: Icon(Icons.play_arrow)),
-              )
             ],
           ),
         )
@@ -292,7 +272,8 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
     );
   }
 
-  Widget body() {
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Column(
@@ -303,7 +284,7 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
             child: recordbody(),
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           const Text(
             "주의 사항",
@@ -321,8 +302,30 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
             height: 10,
           ),
           FilledButton(
-            onPressed: () {},
-            child: const Text("확인"),
+            style: ButtonStyle(
+                backgroundColor: !_havefile
+                    ? MaterialStateProperty.all(Colors.grey)
+                    : MaterialStateProperty.all(Color(0xFF69F0AE))),
+            onPressed: () async {
+              if (_havefile) {
+                String? filename = await savefile();
+                //예외 처리 해야 하는데 아 ~~~~~~~~~
+                Provider.of<SelectAssetProvider>(context, listen: false)
+                    .filesave(
+                        filepath: filename!,
+                        islink: false,
+                        type: AssetType.audio);
+                showSnackBar("file이 선택됐습니다" + filename, context);
+                Navigator.pop(context);
+              }
+            },
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Text(
+                "선택하기",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
           ),
         ],
       ),

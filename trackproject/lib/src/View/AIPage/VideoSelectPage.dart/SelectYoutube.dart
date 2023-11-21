@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:photo_manager/photo_manager.dart';
+import 'package:provider/provider.dart';
+import 'package:trackproject/src/provider/SelectAssetProvider.dart';
 import 'package:trackproject/src/utilities/snackbar.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -146,7 +149,17 @@ class _YoutubeLinkPageState extends State<YoutubeLinkPage> {
   Widget _postbutton(BuildContext context) {
     return MaterialButton(
       color: _isinit ? Colors.greenAccent : Colors.grey,
-      onPressed: () {},
+      onPressed: () {
+        if (_isinit) {
+          Provider.of<SelectAssetProvider>(context, listen: false).filesave(
+              filepath: _idController.text,
+              islink: true,
+              type: AssetType.video);
+          debugPrint("이거 내가 친 거 맞나?" + _idController.text);
+          Navigator.pop(context);
+          showSnackBar("file이 추가됐습니다", context);
+        }
+      },
       child: const Padding(
         padding: EdgeInsets.symmetric(vertical: 14.0),
         child: Text(
