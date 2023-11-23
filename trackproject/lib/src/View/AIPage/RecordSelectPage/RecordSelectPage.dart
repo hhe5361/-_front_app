@@ -75,6 +75,7 @@ class _RecordSelectPageState extends State<RecordSelectPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: myappbar2("음성 선택"),
         body: Column(children: [_tabBar(), pages[_currentapge]]));
   }

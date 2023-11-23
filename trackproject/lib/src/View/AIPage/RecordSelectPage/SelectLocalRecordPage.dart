@@ -5,6 +5,8 @@ import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:trackproject/src/models/Album.dart';
 import 'package:trackproject/src/provider/SelectAssetProvider.dart';
+import 'package:trackproject/src/utilities/Font_const.dart';
+import 'package:trackproject/src/utilities/HexColor.dart';
 import 'package:trackproject/src/utilities/MyTheme.dart';
 import 'package:trackproject/src/utilities/mediasize.dart';
 import 'package:trackproject/src/utilities/snackbar.dart';
@@ -78,13 +80,18 @@ class _SelectLocalAudioState extends State<SelectLocalAudio> {
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           height: mediaheight * 0.115,
-          decoration: box1(color: Colors.grey.shade300),
+          decoration: defaultDecobox(color: Colors.grey.shade200),
           child: Row(
             children: [
-              const SizedBox(width: 10),
-              Icon(_audios[index].favo
-                  ? Icons.check_circle
-                  : Icons.circle_outlined),
+              const SizedBox(width: 20),
+              _audios[index].favo
+                  ? const Icon(
+                      Icons.check_circle,
+                    )
+                  : const Icon(
+                      Icons.circle_outlined,
+                      color: Colors.black26,
+                    ),
               const SizedBox(width: 20),
               Flexible(
                 child: Padding(
@@ -97,9 +104,18 @@ class _SelectLocalAudioState extends State<SelectLocalAudio> {
                         _audios[index].assetinfo.title.toString(),
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Text(_audios[index].assetinfo.createDateTime.toString()),
-                      Text(formatMilliseconds(
-                          _audios[index].assetinfo.duration * 1000))
+                      const Divider(),
+                      Text(
+                        "녹음 날짜 : " +
+                            _audios[index].assetinfo.createDateTime.toString(),
+                        style: fontDetails(8),
+                      ),
+                      Text(
+                        "녹음 시간 :" +
+                            formatMilliseconds(
+                                _audios[index].assetinfo.duration * 1000),
+                        style: fontDetails(8),
+                      )
                     ],
                   ),
                 ),
@@ -110,18 +126,19 @@ class _SelectLocalAudioState extends State<SelectLocalAudio> {
       );
 
   Widget _renderaddbutton() => FloatingActionButton(
-      backgroundColor: _count == 0 ? Colors.grey : Colors.greenAccent,
+      elevation: 30,
+      backgroundColor: _count == 0 ? ColorGrey : ColorGreenLight,
       onPressed: () async {
         File? file = await _selectaudio?.file;
         Provider.of<SelectAssetProvider>(context, listen: false).filesave(
             filepath: file!.path, islink: false, type: AssetType.audio);
         debugPrint("선택한 asset의 절대 경로 의미함" + file!.path.toString());
+        showSnackBar("file이 선택됐습니다!", context);
         Navigator.pop(context);
-        showSnackBar("image file이 선택됐습니다!", context);
       },
       child: Text(
         "$_count/1",
-        style: const TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.black26),
       ));
 
   @override

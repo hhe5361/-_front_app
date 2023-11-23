@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trackproject/src/View/LoginPage/WelcomePage.dart';
 import 'package:trackproject/src/provider/UserProvider.dart';
+import 'package:trackproject/src/utilities/Font_const.dart';
+import 'package:trackproject/src/utilities/HexColor.dart';
 import 'package:trackproject/src/utilities/MyTheme.dart';
 import 'package:trackproject/src/utilities/TextFormStyle.dart';
 
@@ -87,6 +89,7 @@ class _SigninPageState extends State<SigninPage> {
           height: 7,
         ),
         TextFormField(
+          obscureText: true,
           validator: (v) {
             if (v == null) {
               return "can't null";
@@ -125,7 +128,7 @@ class _SigninPageState extends State<SigninPage> {
 
   Widget signinbutton() {
     return TextButton(
-        style: mybuttonstyle(color: Colors.grey),
+        style: mybuttonstyle(color: ColorGrey),
         onPressed: () {
           final formkeystate = _formKey.currentState!;
           if (formkeystate.validate()) {
@@ -137,9 +140,9 @@ class _SigninPageState extends State<SigninPage> {
         },
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 30),
-          child: const Text(
+          child: Text(
             "동의하고 회원가입하기",
-            style: TextStyle(color: Colors.black),
+            style: fontmedi(13),
           ),
         ));
   }
@@ -153,7 +156,10 @@ class _SigninPageState extends State<SigninPage> {
         child: ListView(
           children: [
             const Text("회원정보를 입력해주세요"),
-            const Text("표시되어 있는 것은 필수로 작성해주세요"),
+            Text(
+              "표시되어 있는 것은 필수로 작성해주세요",
+              style: fontDetails(10),
+            ),
             const SizedBox(
               height: 15,
             ),

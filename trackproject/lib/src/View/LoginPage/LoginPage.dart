@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trackproject/src/View/LoginPage/SigninPage.dart';
 import 'package:trackproject/src/provider/UserProvider.dart';
+import 'package:trackproject/src/utilities/Font_const.dart';
 import 'package:trackproject/src/utilities/MyTheme.dart';
 import 'package:trackproject/src/utilities/TextFormStyle.dart';
 
@@ -28,17 +29,30 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.center,
                   child: const CircularProgressIndicator());
             } else if (userProvider.status == LoginStatus.islogin) {
-              return const AlertDialog(
-                content: Text("로그인 성공!"),
+              return AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 10),
+                    const Text("로그인 성공!"),
+                    const SizedBox(height: 10),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("확인"),
+                    ),
+                  ],
+                ), //다음페이지로바바로 가도 될 것 같고..응..
               );
             } else {
               return AlertDialog(
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(height: 10), // 추가: 텍스트와 버튼 사이 여백 조절
+                    const SizedBox(height: 10),
                     const Text("로그인 실패!"),
-                    const SizedBox(height: 10), // 추가: 텍스트와 버튼 사이 여백 조절
+                    const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
@@ -83,7 +97,10 @@ class _LoginPageState extends State<LoginPage> {
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => A));
       },
-      child: Text(des!),
+      child: Text(
+        des!,
+        style: fontmedi(10),
+      ),
     );
   }
 
@@ -101,6 +118,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     var passwordtextform = TextFormField(
+      obscureText: true,
       validator: (v) {
         if (v == null) {
           return "password를 입력해주세요";
@@ -112,12 +130,14 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(50, 45, 50, 0),
+      padding: const EdgeInsets.fromLTRB(15, 45, 15, 0),
       child: Column(
         children: [
           Form(
             key: _formKey,
-            child: Column(children: [idtextform, passwordtextform]),
+            child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(children: [idtextform, passwordtextform])),
           ),
           const SizedBox(height: 20),
           loginbutton(),

@@ -16,6 +16,7 @@ class _SelectLocalVideoState extends State<SelectLocalVideo> {
   AssetPathEntity? _path;
   final List<FavAsset> _videos = [];
   int _currentpage = 0;
+  bool permissiongranted = true;
 
   @override
   void initState() {
@@ -25,9 +26,18 @@ class _SelectLocalVideoState extends State<SelectLocalVideo> {
 
   //permission 부분 고칠 거임.. ㅇㅇ
   Future<void> checkPermission() async {
-    var status = await Permission.photos.request();
-    debugPrint(status.toString());
-    await getAlbum();
+    var status = await Permission.videos.request();
+    if (status.isDenied) {
+      setState(() {
+        permissiongranted = false;
+      });
+    } else {
+      setState(() {
+        permissiongranted = true;
+      });
+      await getAlbum();
+    }
+    //debugPrint("here check plz!!!!!!!" + status.toString());
     // var status = await Permission.manageExternalStorage.request();
     // if (status.isGranted) {
     // } else if (status.isPermanentlyDenied) {
@@ -59,18 +69,23 @@ class _SelectLocalVideoState extends State<SelectLocalVideo> {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scroll) {
-          final scrollPixels =
-              scroll.metrics.pixels / scroll.metrics.maxScrollExtent;
-          if (scrollPixels > 0.7) getvideos();
-          return false;
-        },
-        child: _path == null
-            ? const Center(child: CircularProgressIndicator())
-            : GridAssets(
-                assets: _videos,
-                type: AssetType.video,
-              ));
+    return !permissiongranted
+        ? Center(
+            child: Text("permission is Denied"),
+          )
+        : NotificationListener<ScrollNotification>(
+            onNotification: (ScrollNotification scroll) {
+              final scrollPixels =
+                  scroll.metrics.pixels / scroll.metrics.maxScrollExtent;
+              if (scrollPixels > 0.7) getvideos();
+              return false;
+            },
+            child: _path == null
+                ? const Center(child: CircularProgressIndicator())
+                : GridAssets(
+                    assets: _videos,
+                    type: AssetType.video,
+                    notselect: false,
+                  ));
   }
 }

@@ -11,9 +11,9 @@ class SelectAssetPostApi {
       required bool islink}) async {
     Uri url;
     if (islink == true) {
-      url = Uri.parse(baseuri + savefile_youtube_endpoint);
+      url = Uri.parse(baseuri + port_file + savefile_youtube_endpoint);
     } else {
-      url = Uri.parse(baseuri + savefile_endpoint);
+      url = Uri.parse(baseuri + port_file + savefile_endpoint);
     }
 
     try {
@@ -27,9 +27,11 @@ class SelectAssetPostApi {
       }
 
       var res = await req.send();
-
       if (res.statusCode == 200) {
-        debugPrint('업로드 성공');
+        var mes = await res.stream.bytesToString();
+
+        debugPrint('업로드 성공' + mes);
+
         return true;
       } else {
         debugPrint('업로드 실패. 응답 코드: ${res.statusCode}');

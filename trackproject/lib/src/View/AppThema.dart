@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trackproject/src/View/AIPage/AiMainPage.dart';
 import 'package:trackproject/src/View/CameraPage/MainCameraPage.dart';
+
 import 'package:trackproject/src/View/MyPage/MainUserPage.dart';
 import 'package:trackproject/src/utilities/MyTheme.dart';
 //import 'package:trackproject/src/widgets/AnimatedIndexdPage.dart';
@@ -17,7 +18,7 @@ class _AppThemaState extends State<AppThema> {
   int _currentpage = 1;
   final List<Widget> _pages = <Widget>[
     const MainAiPage(),
-    const MainCameraPage(),
+    MainCameraPage(),
     MainUserPage()
   ];
 

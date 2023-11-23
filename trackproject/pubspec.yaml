@@ -47,6 +47,10 @@ dependencies:
   audio_session: ^0.1.18
   gallery_saver: ^2.3.2
   camera: ^0.10.5+5
+  video_player: ^2.8.1
+  flutter_native_splash: ^2.3.6
+  shared_preferences: ^2.2.2
+
   # path_provider: ^2.1.1
   # extended_image: ^8.1.1
   # http: ^1.1.0
@@ -74,15 +78,37 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   fonts:
-    - family: Pretendard
+    - family : BaseFont
       fonts:
-        - asset: assets/fonts/Pretendard-Bold.otf
-        - asset: assets/fonts/Pretendard-SemiBold.otf
-        - asset: assets/fonts/Pretendard-Regular.otf
+        - asset: assets/fonts/yogiyo.ttf
+          weight: 100
+        - asset: assets/fonts/yogiyo.ttf
+          weight: 200
+        - asset: assets/fonts/yogiyo.ttf
+          weight: 300
+        - asset: assets/fonts/yogiyo.ttf
+          weight: 400
+        - asset: assets/fonts/yogiyo.ttf
+          weight: 500
+        - asset: assets/fonts/yogiyo.ttf
+          weight: 600
+        - asset: assets/fonts/yogiyo.ttf
+          weight: 700
+        - asset: assets/fonts/yogiyo.ttf
+          weight: 800
+        - asset: assets/fonts/yogiyo.ttf
+          weight: 900
+    # - family: Pretendard
+    #   fonts:
+    #     - asset: assets/fonts/Pretendard-Bold.otf
+    #     - asset: assets/fonts/Pretendard-SemiBold.otf
+    #     - asset: assets/fonts/Pretendard-Regular.otf
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/icon/
     - assets/image/
+    - assets/ex.mp4
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

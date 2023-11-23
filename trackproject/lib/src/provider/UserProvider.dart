@@ -11,6 +11,7 @@ class UserProvider extends ChangeNotifier {
   User? _user;
 
   get status => _islogin;
+  get name => _user!.id;
 
   void setstatus(LoginStatus status) {
     _islogin = status;

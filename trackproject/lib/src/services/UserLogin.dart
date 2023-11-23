@@ -7,7 +7,7 @@ import 'package:trackproject/src/utilities/api_endpoint.dart';
 
 class LoginApi {
   Future<String?> login({required String id, required String password}) async {
-    final Uri uri = Uri.parse(baseuri + login_endpoint);
+    final Uri uri = Uri.parse(baseuri + port_user + login_endpoint);
     final Map<String, String> data = {'id': id, 'password': password};
     final headers = {'Content-Type': 'application/json'};
 
@@ -39,7 +39,7 @@ class LoginApi {
       {required String id,
       required String password,
       required String email}) async {
-    final Uri uri = Uri.parse(baseuri + sign_endpoint);
+    final Uri uri = Uri.parse(baseuri + port_user + sign_endpoint);
     final Map<String, String> formatdata = {
       'id': id,
       'password': password,

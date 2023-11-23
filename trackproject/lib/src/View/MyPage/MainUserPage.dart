@@ -1,28 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:trackproject/src/View/LoginPage/LoginPage.dart';
+import 'package:trackproject/src/provider/UserProvider.dart';
+import 'package:trackproject/src/utilities/Font_const.dart';
 import 'package:trackproject/src/utilities/MyTheme.dart';
 import 'package:trackproject/src/utilities/mediasize.dart';
 
 class MainUserPage extends StatelessWidget {
   MainUserPage({super.key});
-  bool _ischecked = true;
+
   //login 되어 있는지 shared preference에서 확인하고 해야 할 듯? ㅇㅇ
   @override
   Widget build(BuildContext context) {
-    return _ischecked ? LoginPage() : MyPage();
+    UserProvider _provider = Provider.of<UserProvider>(context, listen: true);
+    return _provider.status != LoginStatus.islogin
+        ? const LoginPage()
+        : myPage(context);
   }
 
-  Widget showMyinfo() {
+  Widget showMyinfo(BuildContext context) {
+    String myname = Provider.of<UserProvider>(context, listen: false).name;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SvgPicture.asset(
           "assets/icon/welcomeuser.svg",
+          height: mediawidth * 0.5,
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text("오늘부터 아이돌이 될"), Text("***님!")],
+          children: [const Text("오늘부터 아이돌이 될"), Text("$myname님!")],
         )
       ],
     );
@@ -33,34 +41,40 @@ class MainUserPage extends StatelessWidget {
       itemCount: 10,
       itemBuilder: (context, index) {
         return Container(
-          margin: EdgeInsets.symmetric(vertical: 10),
+          margin: const EdgeInsets.symmetric(vertical: 10),
           width: mediawidth * 0.6,
           height: mediaheight * 0.13,
-          decoration: box1(),
+          decoration: defaultDecobox(),
         );
       },
     );
   }
 
-  Widget MyPage() {
+  Widget myPage(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
               flex: 3,
               child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
-                  child: showMyinfo())),
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                  child: showMyinfo(context))),
           const Divider(
             color: Colors.black,
           ),
-          Text(
+          const Text(
             "최근 제작 영상",
           ),
-          Text("최대 15개의 영상만 저장합니다."),
-          Expanded(flex: 8, child: recentvideo())
+          Text(
+            "최대 15개의 영상만 저장합니다.",
+            style: fontDetails(11),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Expanded(flex: 9, child: recentvideo())
         ],
       ),
     );

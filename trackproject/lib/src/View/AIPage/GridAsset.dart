@@ -5,16 +5,19 @@ import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:trackproject/src/models/Album.dart';
 import 'package:trackproject/src/provider/SelectAssetProvider.dart';
+import 'package:trackproject/src/services/test.dart';
+import 'package:trackproject/src/utilities/HexColor.dart';
 import 'package:trackproject/src/utilities/snackbar.dart';
 
 class GridAssets extends StatefulWidget {
   final List<FavAsset> assets;
   AssetType type;
   late AssetEntity? selectasset;
-
+  late bool notselect;
   GridAssets({
     required this.type,
     required this.assets,
+    required this.notselect,
     Key? key,
   }) : super(key: key);
 
@@ -54,19 +57,26 @@ class _GridAssetsState extends State<GridAssets> {
               fit: BoxFit.cover,
             ),
           ),
-          Positioned(
-              top: 5,
-              right: 5,
-              child: Icon(!widget.assets[index].favo
-                  ? Icons.circle_outlined
-                  : Icons.check_circle)),
+          widget.notselect
+              ? Container()
+              : Positioned(
+                  top: 4,
+                  right: 4,
+                  child: !widget.assets[index].favo
+                      ? const Icon(
+                          Icons.circle_outlined,
+                          color: Colors.black38,
+                        )
+                      : const Icon(Icons.check_circle_rounded),
+                )
         ]),
       ),
     );
   }
 
   Widget _renderaddbutton() => FloatingActionButton(
-      backgroundColor: _count == 0 ? Colors.grey : Colors.greenAccent,
+      elevation: 30,
+      backgroundColor: _count == 0 ? ColorGrey : ColorGreenLight,
       onPressed: () async {
         if (_count == 1 && widget.selectasset != null) {
           File? file = await widget.selectasset?.file;
@@ -79,7 +89,7 @@ class _GridAssetsState extends State<GridAssets> {
       },
       child: Text(
         "$_count/1",
-        style: const TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.black26),
       ));
 
   @override
@@ -94,7 +104,9 @@ class _GridAssetsState extends State<GridAssets> {
           return _renderimage(index);
         },
       ),
-      Positioned(bottom: 15, right: 15, child: _renderaddbutton())
+      widget.notselect
+          ? Container()
+          : Positioned(bottom: 15, right: 15, child: _renderaddbutton())
     ]);
   }
 }

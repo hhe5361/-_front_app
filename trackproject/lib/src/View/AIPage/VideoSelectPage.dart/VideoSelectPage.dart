@@ -13,8 +13,8 @@ class SelectVideoPage extends StatefulWidget {
 class _SelectVideoPageState extends State<SelectVideoPage>
     with SingleTickerProviderStateMixin {
   List<dynamic> pages = [
-    const SelectLocalVideo(),
     YoutubeLinkPage(),
+    const SelectLocalVideo(),
   ];
   int _currentapge = 0;
 
@@ -70,8 +70,12 @@ class _SelectVideoPageState extends State<SelectVideoPage>
       indicatorPadding: const EdgeInsets.symmetric(vertical: 10),
 
       tabs: const [
-        Tab(text: "로컬에서 불러오기"),
-        Tab(text: "유튜브 링크"),
+        Tab(
+          text: "유튜브 링크",
+        ),
+        Tab(
+          text: "Local video",
+        ),
       ],
     );
   }
@@ -79,9 +83,18 @@ class _SelectVideoPageState extends State<SelectVideoPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: myappbar2("동영상 선택"),
-        body: Column(
-            children: [_tabBar(), Expanded(child: pages[_currentapge])]));
+        body:
+            Column(children: [_tabBar(), Expanded(child: pages[_currentapge])])
+        //     SingleChildScrollView(
+        //   physics: const ClampingScrollPhysics(),
+        //   child: Column(children: [
+        //     _tabBar(),
+        //      Expanded(child: pages[_currentapge])
+
+        //   ]),
+        // )
+        );
   }
 }

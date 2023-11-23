@@ -10,6 +10,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:trackproject/src/provider/SelectAssetProvider.dart';
+import 'package:trackproject/src/utilities/Font_const.dart';
+import 'package:trackproject/src/utilities/HexColor.dart';
+import 'package:trackproject/src/utilities/MyTheme.dart';
 import 'package:trackproject/src/utilities/mediasize.dart';
 import 'package:trackproject/src/utilities/snackbar.dart';
 
@@ -165,7 +168,7 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
     debugPrint("appDoc: " + saveDirectory + fileName!);
 
     if (fileName != null && fileName.isNotEmpty) {
-      String customSavePath = '$saveDirectory/$fileName.mp4';
+      String customSavePath = '$saveDirectory/$fileName.m4a';
 
       Directory customSaveDir = Directory(saveDirectory);
       if (!customSaveDir.existsSync()) {
@@ -195,12 +198,17 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('파일 이름 입력'),
+          title: const Text(
+            '파일 저장',
+            style: TextStyle(
+                fontFamily: 'BaseFont', fontSize: 20, color: Colors.black),
+          ),
           content: TextField(
             onChanged: (value) {
               filename = value;
             },
-            decoration: const InputDecoration(labelText: '파일 이름'),
+            decoration: InputDecoration(
+                labelText: '파일 이름', labelStyle: fontDetails(13)),
           ),
           actions: [
             TextButton(
@@ -224,7 +232,7 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
 
   Widget recordbody() {
     Widget circlebox(IconButton childitem) => Container(
-          padding: const EdgeInsets.all(3),
+          padding: const EdgeInsets.all(7),
           decoration:
               const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
           child: childitem,
@@ -234,8 +242,8 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
       children: [
         Container(
           margin: const EdgeInsets.symmetric(vertical: 7, horizontal: 7),
-          height: 190,
-          color: Colors.white,
+          height: mediaheight * 0.26,
+          decoration: defaultDecobox(color: Colors.white),
         ),
         Expanded(
           child: Row(
@@ -279,33 +287,31 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
       child: Column(
         children: [
           Container(
-            height: 300,
-            color: Colors.grey,
+            height: mediaheight * 0.4,
+            decoration: defaultDecobox(color: Colors.grey.shade400),
             child: recordbody(),
           ),
           const SizedBox(
-            height: 20,
+            height: 30,
           ),
           const Text(
             "주의 사항",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 25),
           ),
-          const Text(
+          Text(
             "최소 30분 이상 녹음 부탁드립니다\n녹음 버튼을 다시 누르시면 처음부터 녹음됩니다",
             textAlign: TextAlign.center,
+            style: fontDetails(10),
           ),
           const SizedBox(
-            height: 10,
-          ),
-          const SizedBox(
-            height: 10,
+            height: 20,
           ),
           FilledButton(
             style: ButtonStyle(
                 backgroundColor: !_havefile
-                    ? MaterialStateProperty.all(Colors.grey)
-                    : MaterialStateProperty.all(Color(0xFF69F0AE))),
+                    ? MaterialStateProperty.all(ColorGrey)
+                    : MaterialStateProperty.all(const Color(0xFF69F0AE))),
             onPressed: () async {
               if (_havefile) {
                 String? filename = await savefile();
@@ -315,13 +321,13 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
                         filepath: filename!,
                         islink: false,
                         type: AssetType.audio);
-                showSnackBar("file이 선택됐습니다" + filename, context);
+                //await Future.delayed(const Duration(seconds: 1));
                 Navigator.pop(context);
               }
             },
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30),
-              child: Text(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: mediawidth * 0.17),
+              child: const Text(
                 "선택하기",
                 style: TextStyle(color: Colors.black),
               ),

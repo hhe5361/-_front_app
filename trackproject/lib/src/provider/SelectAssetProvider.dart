@@ -51,6 +51,7 @@ class SelectAssetProvider extends ChangeNotifier {
 
   void convertstatus(AssetpostStatus status) {
     _status = status;
+    debugPrint("status값 바뀜." + status.toString());
     notifyListeners();
   }
 
@@ -88,6 +89,7 @@ class SelectAssetProvider extends ChangeNotifier {
 //여기 response로 그거 와야 하는 거 아닌가 응답 와야 하는 거 아닌가? 근데 그러면 계속
   Future<void> postfilepath() async {
     convertstatus(AssetpostStatus.loading);
+
     bool? iscorrect = await _api.postfiles(
         imagefile: _imagefile!,
         recordfile: _recordfile!,
