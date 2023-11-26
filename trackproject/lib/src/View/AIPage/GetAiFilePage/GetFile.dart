@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:trackproject/src/View/AIPage/GetAiFilePage/DoneAiPage.dart';
+import 'package:trackproject/src/View/AIPage/GetAiFilePage/ShowAiFile.dart';
 import 'package:trackproject/src/View/AIPage/GetAiFilePage/loadingPage.dart';
 import 'package:trackproject/src/provider/AiFileProvider.dart';
 
@@ -19,10 +19,11 @@ class LoadingGetFilePage extends StatelessWidget {
     if (_provider.status == AiFileStatus.loading) {
       return LoadingPage();
     } else if (_provider.status == AiFileStatus.success) {
-      debugPrint("file 경로 : ~~~~~~$_provider.downloadedFilePath!");
+      debugPrint("file 경로 : ~~~~~~${_provider.downloadedFilePath!}");
       return ShowAiFilePage(filepath: _provider.downloadedFilePath!);
     } else {
-      return const Center(
+      debugPrint("여기서 뻑남");
+      return const Placeholder(
           //error page 하나 만들어야 할 듯..
           );
     }

@@ -170,6 +170,7 @@ class _YoutubeLinkPageState extends State<YoutubeLinkPage> {
               filepath: _idController.text,
               islink: true,
               type: AssetType.video);
+
           Navigator.pop(context);
           showSnackBar("file이 추가됐습니다", context);
         }

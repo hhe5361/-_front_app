@@ -6,6 +6,10 @@ import 'package:trackproject/src/utilities/api_endpoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
+String subfolderName = 'makedVideo';
+
+int countvideo = 0;
+
 class AiFileService {
   Future<String?> checkapi() async {
     var url = Uri.parse(baseuri + port_file + checkfile_endpoint);
@@ -44,14 +48,15 @@ class AiFileService {
   //path 반환함.
   Future<String?> testGetFile() async {
     var url = Uri.parse(baseuri + port_file + '/ai/temp');
-    debugPrint("기다리셈");
-    await Future.delayed(Duration(minutes: 1));
     try {
       //time 해야 하는 부분
-      var res = await http.get(url).timeout(const Duration(minutes: 1));
+      var res = await http.get(url).timeout(const Duration(minutes: 3));
       if (res.statusCode == 200) {
+        debugPrint("nice~");
+        debugPrint("here is the resbody : ${res.body}");
         return res.body;
       } else {
+        debugPrint("에러 발생 에러!! ${res.body}");
         return null;
       }
     } catch (e) {
@@ -63,7 +68,7 @@ class AiFileService {
   Future<String?> downloadFile(String path) async {
     try {
       var res =
-          await http.get(Uri.parse(path)).timeout(const Duration(minutes: 20));
+          await http.get(Uri.parse(path)).timeout(const Duration(seconds: 20));
 
       if (res.statusCode == 200) {
         String filepath = await saveFile(res.bodyBytes);
@@ -82,11 +87,23 @@ class AiFileService {
   Future<String> saveFile(Uint8List data) async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String appDocPath = appDocDir.path;
-    String filePath = '$appDocPath/video.mp4'; //이름은 임의로 일단 하나로 통일함.
 
+    appDocPath = await _createsubfolder(appDocPath);
+
+    String filePath =
+        '$appDocPath/MakeVideo_$countvideo.mp4'; //이름은 임의로 일단 하나로 통일함.
     File file = File(filePath);
     await file.writeAsBytes(data);
-
+    countvideo++;
     return filePath;
+  }
+
+  Future<String> _createsubfolder(String root) async {
+    Directory subfolder = Directory("$root/$subfolderName");
+    if (await subfolder.exists()) {
+    } else {
+      await subfolder.create();
+    }
+    return subfolder.path;
   }
 }

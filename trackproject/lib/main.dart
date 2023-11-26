@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trackproject/src/View/AppThema.dart';
 import 'package:trackproject/src/provider/AiFileProvider.dart';
+import 'package:trackproject/src/provider/GetMakeVideoProvider.dart';
 import 'package:trackproject/src/provider/SelectAssetProvider.dart';
 import 'package:trackproject/src/provider/UserProvider.dart';
 import 'package:trackproject/src/provider/YoutubeLinkeProvider.dart';
@@ -21,7 +22,7 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (context) => UserProvider()),
       ChangeNotifierProvider(create: (context) => SignupProvider()),
       ChangeNotifierProvider(create: (context) => SelectAssetProvider()),
-      //ChangeNotifierProvider(create: (context) => CameraProvider()),
+      ChangeNotifierProvider(create: (context) => MyFileDetailProvider()),
       ChangeNotifierProvider(create: (context) => AiFileProvider()),
     ],
     child: const MyApp(),

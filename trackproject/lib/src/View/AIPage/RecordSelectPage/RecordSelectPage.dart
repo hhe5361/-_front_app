@@ -12,7 +12,7 @@ class RecordSelectPage extends StatefulWidget {
 
 class _RecordSelectPageState extends State<RecordSelectPage>
     with SingleTickerProviderStateMixin {
-  List<dynamic> pages = [const SelectLocalAudio(), const LiveRecordPage()];
+  List<dynamic> pages = [const LiveRecordPage(), const SelectLocalAudio()];
 
   int _currentapge = 0;
 
@@ -66,8 +66,8 @@ class _RecordSelectPageState extends State<RecordSelectPage>
       indicatorPadding: const EdgeInsets.symmetric(vertical: 10),
 
       tabs: const [
-        Tab(text: "내 파일"),
         Tab(text: "실시간 녹음"),
+        Tab(text: "내 파일"),
       ],
     );
   }

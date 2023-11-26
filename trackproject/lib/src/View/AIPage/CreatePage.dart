@@ -176,7 +176,7 @@ class CreatePage extends StatelessWidget {
                   child: const CircularProgressIndicator());
             } else if (userProvider.status == AssetpostStatus.success) {
               return AlertDialog(
-                content: Column(children: [
+                content: Column(mainAxisSize: MainAxisSize.min, children: [
                   const SizedBox(height: 10),
                   const Text("upload Success!"),
                   const SizedBox(height: 10),

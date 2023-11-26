@@ -26,7 +26,7 @@ TextStyle fontmedi(double size) => TextStyle(
 
 TextStyle mystyle = const TextStyle(
   fontFamily: 'BaseFont',
-  color: Colors.black,
+  color: Colors.grey,
   fontWeight: FontWeight.w100,
-  fontSize: 14.0,
+  fontSize: 12.0,
 );

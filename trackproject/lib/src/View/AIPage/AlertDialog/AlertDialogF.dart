@@ -189,9 +189,9 @@ class ImageAlert extends AssetAlert {
 
 class VideoAlert extends AssetAlert {
   @override
-  final String correctpath = 'assets/image/image_x.png';
+  final String correctpath = 'assets/image/video_o.jpg';
   @override
-  final String incorrectpath = 'assets/image/image_o.png';
+  final String incorrectpath = 'assets/image/video_x.jpg';
   @override
   Widget contents() {
     return Column(

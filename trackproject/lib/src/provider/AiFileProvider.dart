@@ -57,7 +57,7 @@ class AiFileProvider with ChangeNotifier {
 
   Future<void> tempFileGet() async {
     setstatus(AiFileStatus.loading);
-    Future.delayed(const Duration(seconds: 15));
+    await Future.delayed(const Duration(minutes: 5));
 
     String? filePath = await _aiFileService.testGetFile();
 

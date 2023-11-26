@@ -57,6 +57,7 @@ class LoginApi {
         //final resdata = jsonDecode(res.body);
         return true;
       } else {
+        debugPrint("login error : " + res.body.toString());
         return false;
       }
     } catch (e) {

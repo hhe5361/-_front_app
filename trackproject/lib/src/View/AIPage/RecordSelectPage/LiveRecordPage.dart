@@ -36,7 +36,7 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
   bool _mRecorderIsInited = false;
   bool _mplaybackReady = false;
   bool _havefile = false;
-  Duration _recordedTime = Duration();
+  bool _isvisible = false;
 
   @override
   void initState() {
@@ -243,7 +243,17 @@ class _LiveRecordPageState extends State<LiveRecordPage> {
         Container(
           margin: const EdgeInsets.symmetric(vertical: 7, horizontal: 7),
           height: mediaheight * 0.26,
+          width: double.infinity,
+          alignment: Alignment.center,
           decoration: defaultDecobox(color: Colors.white),
+          child: AnimatedOpacity(
+            opacity: _mRecorder!.isRecording ? 0.3 : 1.0,
+            duration: const Duration(milliseconds: 700),
+            child: Text(
+              _mRecorder!.isRecording ? "녹음이 진행 중입니다! 쉿.." : "녹음을 시작해주세요!",
+              style: fontmedi(20),
+            ),
+          ),
         ),
         Expanded(
           child: Row(
