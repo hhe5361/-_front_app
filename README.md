@@ -26,7 +26,21 @@ sdk: '>=3.1.0 <4.0.0'
 ### main ui 
 ---
 ##### you can even take picture!
-![KakaoTalk_20240531_183039056_05](https://github.com/hhe5361/2-2project_app_front/assets/113621940/1a807cf8-5a4a-4053-bfc0-6e1efeef9854)
+<img src="https://github.com/hhe5361/2-2project_app_front/assets/113621940/77871348-9c9b-452c-a77a-2e92ea6b62dd.png" width="200" height="400">
+
+![generate](https://github.com/hhe5361/2-2project_app_front/assets/113621940/ad2a3eda-5174-4d9a-a602-9b1e5c63b65b)
+![alert message](https://github.com/hhe5361/2-2project_app_front/assets/113621940/b6be60cf-e8fc-4020-801c-1dd2bf0fcb12)
+![login page](https://github.com/hhe5361/2-2project_app_front/assets/113621940/4ea64c63-f329-4459-838d-1866f079611b)
+![loading](https://github.com/hhe5361/2-2project_app_front/assets/113621940/9304d6b3-fc71-4a0c-9d4a-05e64ce65197)
+![select your record](https://github.com/hhe5361/2-2project_app_front/assets/113621940/56dc580c-4640-444a-9b77-f0f6319b3f16)
+![record](https://github.com/hhe5361/2-2project_app_front/assets/113621940/ca8cf346-ee8f-45d7-91c9-13c742dbf5d4)
+![select youtube link](https://github.com/hhe5361/2-2project_app_front/assets/113621940/9e43824b-734f-4aa2-8616-1e4b4508bcb1)
+![select youtube link 2](https://github.com/hhe5361/2-2project_app_front/assets/113621940/89762ead-ad1c-436d-aeaf-d959c6874791)
+![upload page](https://github.com/hhe5361/2-2project_app_front/assets/113621940/45d3a38a-aa88-4898-9d7b-ef79bf6c1413)
+![init page](https://github.com/hhe5361/2-2project_app_front/assets/113621940/9d6611d1-5feb-40f8-82ea-2a1d8162183e)
+![select picture](https://github.com/hhe5361/2-2project_app_front/assets/113621940/6df01525-ade7-4f35-9ecf-c72a9088ad21)
+![user](https://github.com/hhe5361/2-2project_app_front/assets/113621940/6d2fa8ef-4949-41b2-af1c-144b7295e7e3)
+
 
 ##### Select your image, record and youtube link you want to be!
 
